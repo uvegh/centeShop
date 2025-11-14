@@ -1,0 +1,24 @@
+services:
+ postgres:
+   image: postgres:15-alpine
+   container_name: ordering_postgres
+   restart: always
+
+   environment:
+    POSTGRES_USER: admin
+    POSTGRES_PASSWORD: cente24
+
+   ports:
+   - "5433:5432"
+ 
+   volumes:
+   - ordering_data:/var/lib/postgres/data   
+   
+   networks:
+   - ordering_network 
+volumes:
+   ordering_data:
+   
+networks:
+ ordering_network:
+  driver: bridge    
