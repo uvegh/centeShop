@@ -4,10 +4,11 @@ using Microsoft.Extensions.Options;
 using Ordering.Domain.Common;
 using Ordering.Domain.Events;
 using Shared.Library.Model;
+using System.Net;
 
 namespace Ordering.Domain.Entities;
 
-public class Order : AggregateRoot
+public  class Order : AggregateRoot
 {
     public Guid UserId { get; private set; }
     public List<OrderItem> Items {get; private set;}
@@ -23,8 +24,17 @@ public class Order : AggregateRoot
         TotalAmount = totalAmount;
         Status = status;
 
+       
+    }
+
+    public static Order Create( Guid userId, decimal totalAmount, List<OrderItem>? items=null)
+    {
+        var order = new Order(userId= Guid.NewGuid(), items, totalAmount, "Pending");
         //automatically add new order domain event
-        AddDomainEvent(new OrderCreatedDomainEvent(Id, UserId, TotalAmount));
+      
+     order.AddDomainEvent(new OrderCreatedDomainEvent(order.Id, userId, totalAmount));
+        
+        return order;
     }
     public void MaskAsPaid()
     {
