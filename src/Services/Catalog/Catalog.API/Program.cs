@@ -1,6 +1,7 @@
 
 //using Catalog.Infrastructure;
 using Catalog.API.Configuration;
+using Catalog.Application.Features.Command;
 using Catalog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +14,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapperConfig>());
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(CreateProductCommand).Assembly);
+});
+var connecitonStr = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CatalogDbContext>(options =>
 {
-    var connecitonStr = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseNpgsql(connecitonStr);
+ 
+    options.UseNpgsql(connecitonStr, b => b.MigrationsAssembly("Catalog.API"));
+
 });
 // Configure the HTTP request pipeline.
 var app = builder.Build();
