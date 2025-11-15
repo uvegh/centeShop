@@ -47,4 +47,11 @@ public class Product : BaseEntity
         Price = newPrice;
 
     }
+
+    public static Product Create(string name, decimal price, int stockQuantitiy)
+    {
+        var newProduct = new Product(name, price, stockQuantitiy);
+        return newProduct;
+
+    }
 }
