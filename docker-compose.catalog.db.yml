@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+ postgres:
+  image: postgres:15-alpine
+  container_name: catalog_postgres
+  restart: always
+
+  environment:
+    POSTGRES_USER: admin
+    POSTGRES_PASSWORD: cente25
+    POSTGRES_DB: catalog_db
+
+  ports:
+  - "5433:5432"
+  
+  volumes:
+   - catalog_data:/var/lib/postgresql/data
+   
+  networks:
+   - catalog_network
+
+volumes:
+  catalog_data:
+
+networks:
+ catalog_network:
+  driver: bridge
+
+
+   

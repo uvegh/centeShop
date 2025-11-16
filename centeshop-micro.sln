@@ -5,8 +5,8 @@ VisualStudioVersion = 17.14.36616.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 	ProjectSection(SolutionItems) = preProject
-		docker-compose.db.yml = docker-compose.db.yml
 		docker-compose.ordering.db.yml = docker-compose.ordering.db.yml
+		docker-compose.catalog.db.yml = docker-compose.catalog.db.yml
 		docker-compose.rabbitmq.yml = docker-compose.rabbitmq.yml
 	EndProjectSection
 EndProject
