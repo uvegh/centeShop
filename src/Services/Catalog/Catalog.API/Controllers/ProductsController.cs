@@ -4,6 +4,7 @@ using Catalog.API.DTOs;
 using Catalog.Application.Features.Command;
 using Catalog.Application.Features.Query.Product;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Library.Model;
 
@@ -41,32 +42,27 @@ public class ProductsController : ControllerBase
 
     }
 
-    //[HttpGet("{id}")]
+    [HttpGet("{id}")]
 
-    //public async Task<ActionResult<Product>> GetProduct ([FromRoute] Guid id)
-    //{
-    //    var product = _products.FirstOrDefault(x => (x.Id == id));
-
-    //    if (id == null)
-    //    {
-    //        return NotFound( new ApiResponse<Product>
-    //        {
-    //            Success= false,
-    //            Message="Not found"
-    //        });
-    //    }
+    public async Task<ActionResult> GetProduct([FromRoute] Guid id)
+    {
+        //var res = await _mediator.Send(new GetProductQuery(id));
 
 
-    //    return Ok(new ApiResponse<Product>
-    //    {
-    //        Success = true,
-    //        Data = _products[1],
-    //        Message = "successfully retrieved"
 
-    //    });
-    //}
 
-    [HttpPost]
+        //    return Ok(new ApiResponse<Product>
+        //    {
+        //        Success = true,
+        //        Data = _products[1],
+        //        Message = "successfully retrieved"
+
+        //    });
+        //}
+        return Ok();
+    }
+
+        [HttpPost]
     public async Task<ActionResult<ProductDto>> AddProduct(CreateProductCommand command)
     {
         await _mediator.Send(command);

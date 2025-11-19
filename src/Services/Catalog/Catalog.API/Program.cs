@@ -25,7 +25,7 @@ var connecitonStr = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<CatalogDbContext>(options =>
 {
  
-    options.UseNpgsql(connecitonStr, b => b.MigrationsAssembly("Catalog.API"));
+    options.UseNpgsql(connecitonStr, b => b.MigrationsAssembly("Catalog.Infrastructure"));
 
 });
 // Configure the HTTP request pipeline.
