@@ -7,9 +7,9 @@ services:
   restart: always
 
   environment:
-    POSTGRES_USER: admin
-    POSTGRES_PASSWORD: cente25
-    POSTGRES_DB: catalog_db
+    POSTGRES_USER: 
+    POSTGRES_PASSWORD: 
+    POSTGRES_DB: 
 
   ports:
   - "5433:5432"
