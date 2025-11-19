@@ -5,25 +5,25 @@ using Shared.Library.Model;
 namespace Cart.Domain.Entities;
 
 
-public class Cart:AggregateRoot
+public class Cart
 {
     
 
     public Guid UserId { get; private set; }
     //initialize list immediately
-    public List<CartItem>? Items { get; private  set; } = new(); 
+    public List<CartItem> Items { get; private  set; } = new();
 
 
-    //public Cart(Guid userId, List<CartItem> items)
-    //{
-    //    UserId = userId;
+    private Cart()
+    {
       
+    }
 
-    //}
-
-    private Cart(Guid userId)
+    // Needed for real cart creation (business logic)
+    public Cart(Guid userId)
     {
         UserId = userId;
+        //Items = new();   // VERY IMPORTANT
     }
     public void   AddItem(Guid productId, int quantity, string productName,decimal unitPrice)
     {

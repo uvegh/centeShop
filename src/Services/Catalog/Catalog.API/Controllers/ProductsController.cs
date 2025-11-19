@@ -46,7 +46,7 @@ public class ProductsController : ControllerBase
 
     public async Task<ActionResult> GetProduct([FromRoute] Guid id)
     {
-        //var res = await _mediator.Send(new GetProductQuery(id));
+        var res = await _mediator.Send(new GetProductQueryById(id));
 
 
 
@@ -59,7 +59,7 @@ public class ProductsController : ControllerBase
 
         //    });
         //}
-        return Ok();
+        return Ok(res);
     }
 
         [HttpPost]

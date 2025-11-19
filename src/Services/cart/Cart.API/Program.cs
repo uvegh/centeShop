@@ -1,9 +1,10 @@
-using Cart.Application.Features.Cart.Command.AddItem;
+using Cart.Application.Features.Command.Cart.AddItem;
 using Cart.Application.Interface;
 using Cart.Domain.IRepository;
 using Cart.Infrastructure.Redis;
 using Cart.Infrastructure.Repository;
 using Cart.Infrastructure.Services;
+using Catalog.API.Configuration;
 using MassTransit;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,12 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(AddToCartCommand).Assembly);
 });
 builder.Services.AddSingleton(new RedisConnectionFactory(builder.Configuration.GetConnectionString("Redis")!));
-builder.Services.AddScoped<ICartRespository, RedisCartRepository>();
 
+builder.Services.AddScoped<ICartRespository, RedisCartRepository>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MapperConfig>();
+});
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((ctx, cfg) =>
@@ -36,7 +41,8 @@ builder.Services.AddMassTransit(x =>
 });
 builder.Services.AddHttpClient<ICatalogClient, CatalogClient>(c =>
 {
-    c.BaseAddress = new Uri(builder.Configuration["CatalogServiceUrl"]);
+    var url = builder.Configuration.GetConnectionString("CatalogServiceUrl");
+    c.BaseAddress = new Uri(url)?? throw new Exception("Catalog url is missing");
 });
 var app = builder.Build();
 

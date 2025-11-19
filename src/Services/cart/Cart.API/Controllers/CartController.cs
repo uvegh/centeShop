@@ -1,4 +1,5 @@
-﻿using Cart.Application.Features.Cart.Command.AddItem;
+﻿using Cart.Application.Features.Command.Cart.AddItem;
+using Cart.Application.Features.Query.Cart;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +20,18 @@ public class CartController:ControllerBase
 
     public async Task<IActionResult> Add(AddToCartCommand req)
     {
-          await _mediator.Send(new AddToCartCommand(req.UserId, req.ProductId, req.Quantity));
+      var res=    await _mediator.Send(new AddToCartCommand(req.UserId, req.ProductId, req.Quantity));
 
-        return Ok("Item added");
+        return Ok(res);
+    }
+
+    [HttpGet("{id}")]
+
+    public async Task<IActionResult> GetCart(  [FromRoute] Guid id)
+    {
+        var res = await _mediator.Send(new  GetUserCartQuery(id));
+
+        return Ok(res);
     }
 
 }

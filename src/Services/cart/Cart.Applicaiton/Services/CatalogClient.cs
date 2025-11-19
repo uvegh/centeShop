@@ -23,7 +23,7 @@ public class CatalogClient : ICatalogClient
     
     //}
 
-    public async Task<ProductDto?> GetProduct(Guid id)
+    public async Task<ProductDto?> GetProduct(Guid id, CancellationToken ct=default)
     {
         var response = await _http.GetAsync($"/api/Products/{id}");
         if (!response.IsSuccessStatusCode)

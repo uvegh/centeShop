@@ -19,5 +19,6 @@ public  class CartItem
         UnitPrice = unitPrice;
 
     }
+
     public void Increase(int amount) => Quantity += amount;
 }
