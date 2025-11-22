@@ -1,25 +1,35 @@
-﻿using AutoMapper;
+﻿
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Ordering.Domain.Entities;
+using Ordering.Application.Features.Order.Command;
+
 namespace Ordering.API
 {
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController:ControllerBase
     {
-        public  static readonly List<OrderItem> _orders = new();
-        private readonly IMapper _mapper;
-        public OrderController(IMapper mapper)
+        
+     
+        private readonly IMediator _mediator;
+        public OrderController( IMediator mediator)
         {
-            _mapper = mapper;
+            _mediator = mediator; 
 
      
         }
 
-        //[HttpPost]
+        [HttpPost]
 
-        //public async Task <ActionResult<Order>>
-     
+       public async Task<ActionResult<Guid>> Create(CreateOrderCommand command)
+        {
+        var res=    await _mediator.Send(command);
+            return Ok(res);
+
+        }
+
+       
+        
 
     }
 }
