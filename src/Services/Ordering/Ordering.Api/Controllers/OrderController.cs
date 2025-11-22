@@ -1,26 +1,35 @@
-﻿using MediatR;
+﻿
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Features.Order.Command;
-using Ordering.Infrastructure.Data;
 
-namespace Ordering.API.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class OrderController:ControllerBase
+namespace Ordering.API.Controllers
 {
-    private readonly IMediator _mediator;
-    public OrderController(IMediator mediator )
+    [ApiController]
+    [Route("api/[controller]")]
+    public class OrderController:ControllerBase
     {
-        _mediator = mediator;
+        
+     
+        private readonly IMediator _mediator;
+        public OrderController( IMediator mediator)
+        {
+            _mediator = mediator; 
 
-    }
+     
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder( CreateOrderCommand command)
+        [HttpPost]
 
-    {
-      var order=  await _mediator.Send(command);
-        return Ok( new { order=order, message="Order created" });
+       public async Task<ActionResult<Guid>> Create(CreateOrderCommand command)
+        {
+        var res=    await _mediator.Send(command);
+            return Ok(res);
+
+        }
+
+       
+        
+
     }
 }
