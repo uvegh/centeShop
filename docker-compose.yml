@@ -114,7 +114,7 @@ services:
    container_name: seq
    restart: always
    ports: 
-    - "5431:80"
+    - "5341:80"
    environment:
    - ACCEPT_EULA=Y
    networks:

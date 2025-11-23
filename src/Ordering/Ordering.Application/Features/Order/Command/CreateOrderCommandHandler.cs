@@ -1,6 +1,5 @@
 ﻿
-using Ordering.Application.Features.Order.Command;
-using OrderEntity=Ordering.Domain.Entities.Order;
+
 using Ordering.Infrastructure.Data;
 using Ordering.Domain.Interface;
 
