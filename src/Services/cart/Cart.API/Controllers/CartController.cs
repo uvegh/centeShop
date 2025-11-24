@@ -57,10 +57,10 @@ public class CartController:ControllerBase
 
     [HttpPost("checkout/{userId}")]
 
-    public async Task <IActionResult> Checkout([FromRoute] Guid userId)
+    public async Task <IActionResult> Checkout([FromRoute] Guid userId, [FromBody] CheckOutCartCommand req)
     {
         Console.WriteLine("checkout request sent");
-        var res = await _mediator.Send( new CheckOutCartCommand(userId));
+        var res = await _mediator.Send( new CheckOutCartCommand(userId,req.Address));
         if (res != null)
         {
             return Ok(res);
