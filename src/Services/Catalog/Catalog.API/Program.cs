@@ -9,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,12 +49,32 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-    Console.WriteLine("Connected to database",context.Database.GetType());
+    Console.WriteLine("Connected to database", context.Database.GetType());
 }
 
 //if (app.Environment.IsDevelopment())
 //{ }
-    app.UseSwagger();
+
+
+//  auto migration 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+    try
+    {
+        db.Database.Migrate();
+        Console.WriteLine("Database migrated successfully");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Warning: Database migration failed: {ex.Message}");
+        Console.WriteLine("App will start anyway - check database connection");
+        // Don't crash - let Swagger still work
+    }
+}
+
+app.UseCors("AllowAll");
+app.UseSwagger();
     app.UseSwaggerUI();
 
 
