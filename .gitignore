@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /docker-compose.db.yml
+
+# lambda entrypoint
+*bdaEntryPoint.cs
+*yaml

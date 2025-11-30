@@ -9,6 +9,7 @@ using Ordering.Infrastructure.Data;
 using Ordering.Infrastructure.Repository;
 using Serilog;
 var builder = WebApplication.CreateBuilder(args);
+//builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 builder.Services.AddCors(options =>
 {
