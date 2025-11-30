@@ -8,6 +8,7 @@ using Catalog.API.Configuration;
 using MassTransit;
 using Serilog;
 var builder = WebApplication.CreateBuilder(args);
+//builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 // Add services to the container.
 
@@ -52,6 +53,10 @@ builder.Services.AddMassTransit(x =>
 
     });
 });
+
+
+
+
 // Add HttpClient for Catalog API
 builder.Services.AddHttpClient<ICatalogClient, CatalogClient>(client =>
 {
