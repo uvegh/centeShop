@@ -14,12 +14,12 @@ namespace Catalog.API.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private readonly IMapper _mapper;
+   
     private readonly IMediator _mediator;
 
-    public ProductsController(IMapper mapper, IMediator mediator)
+    public ProductsController( IMediator mediator)
     {
-        _mapper = mapper;
+     
 
         _mediator = mediator;
 
