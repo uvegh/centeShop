@@ -5,6 +5,7 @@ VisualStudioVersion = 17.14.36616.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 	ProjectSection(SolutionItems) = preProject
+		deploy-serverless.ps1 = deploy-serverless.ps1
 		docker-compose.catalog.db.yml = docker-compose.catalog.db.yml
 		docker-compose.ordering.db.yml = docker-compose.ordering.db.yml
 		docker-compose.rabbitmq.yml = docker-compose.rabbitmq.yml
@@ -57,14 +58,27 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{FEF548B3-30AE-4100-8569-F9DC5132EBA7}"
 	ProjectSection(SolutionItems) = preProject
 		api-gateway.yaml = api-gateway.yaml
+		aws-auth-configmap.yaml = aws-auth-configmap.yaml
+		cart-api-deployment.yaml = cart-api-deployment.yaml
+		cart-api-service.yaml = cart-api-service.yaml
 		cart-api.yaml = cart-api.yaml
-		catalog-api.yaml = catalog-api.yaml
+		catalog-api-deployment.yaml = catalog-api-deployment.yaml
+		catalog-api-service.yaml = catalog-api-service.yaml
+		catalog-postgres-deployment.yaml = catalog-postgres-deployment.yaml
+		catalog-postgres-service.yaml = catalog-postgres-service.yaml
 		infra-postgres.yaml = infra-postgres.yaml
 		infra-rabbitmq.yaml = infra-rabbitmq.yaml
 		infra-redis.yaml = infra-redis.yaml
 		infra-seq.yaml = infra-seq.yaml
 		namespace.yaml = namespace.yaml
-		ordering-api.yaml = ordering-api.yaml
+		ordering-api-deployment.yaml = ordering-api-deployment.yaml
+		ordering-api-service.yaml = ordering-api-service.yaml
+		ordering-postgres-deployment.yaml = ordering-postgres-deployment.yaml
+		ordering-postgres-service.yaml = ordering-postgres-service.yaml
+		rabbitmq-deployment.yaml = rabbitmq-deployment.yaml
+		rabbitmq-service.yaml = rabbitmq-service.yaml
+		redis-deployment.yaml = redis-deployment.yaml
+		redis-service.yaml = redis-service.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Library", "src\Common\Shared.Library.csproj", "{0F8F83AA-F97D-9267-03C8-6F9DD7F92897}"

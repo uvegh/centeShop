@@ -8,6 +8,7 @@ using Cart.Infrastructure.Redis;
 using Cart.Infrastructure.Repository;
 using Catalog.API.Configuration;
 using MassTransit;
+using MassTransit.RabbitMqTransport;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -63,8 +64,10 @@ public class Startup
 
         // Singleton for Redis connection - EXACTLY from your Program.cs
         services.AddSingleton(new RedisConnectionFactory(
-            Configuration.GetConnectionString("Redis")!));
+            Configuration.GetConnectionString("AwsRedis")!));
+        var redisString = Configuration.GetConnectionString("AwsRedis");
 
+        Console.WriteLine("redis connection string  " + redisString);
         // HttpClient for Catalog API
         services.AddHttpClient<ICatalogClient, CatalogClient>(client =>
         {
@@ -94,20 +97,22 @@ public class Startup
                 //    h.Password(rabbitMqPass);
                 //});
 
-                Console.WriteLine("MQ USERNAME = " + Environment.GetEnvironmentVariable("MQ_USERNAME"));
-                Console.WriteLine("MQ PASSWORD = " + Environment.GetEnvironmentVariable("MQ_PASSWORD"));
+        
+             
+                var mqPassword= Configuration.GetConnectionString("awsmqPassword")!;
+                var mqUsername = Configuration.GetConnectionString("awsmqUsername")!;
+                var awsmqHost = Configuration.GetConnectionString("awsmqHost");
 
+                Console.WriteLine("MQ USERNAME = " + mqUsername);
 
-                cfg.Host(
-   "b-f89950cb-d7a2-4384-a5e5-4373e86ff412.mq.eu-west-2.on.aws",
-   5671,
-   "/",
-   h =>
-   {
-       h.Username(Environment.GetEnvironmentVariable("MQ_USERNAME"));
-       h.Password(Environment.GetEnvironmentVariable("MQ_PASSWORD"));
-       h.UseSsl();   // VERY IMPORTANT
-   });
+                Console.WriteLine("MQ PASSWORD = " + mqPassword);
+                Console.WriteLine("MQ host = " + awsmqHost);
+
+                cfg.Host(new Uri($"amqps://{awsmqHost}:5671"), h =>
+                {
+                    h.Username(mqUsername);
+                    h.Password(mqPassword);
+                });
             });
 
 
