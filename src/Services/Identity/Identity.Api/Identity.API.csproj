@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Identity\Identity.Application\Identity.Application.csproj" />
   </ItemGroup>
 
 </Project>
