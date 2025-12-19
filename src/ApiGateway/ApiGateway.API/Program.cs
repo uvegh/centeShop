@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Polly;
-using 
+
+
 using Serilog;
 using System.Threading.RateLimiting;
+using ApiGateway.Transforms;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console().WriteTo.File("logs/gateway-.log", rollingInterval: RollingInterval.Day).CreateLogger();
@@ -99,7 +101,7 @@ try
     });
 
     //YARP Reverse Proxy
-    builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy")).AddTransforms<UserContextTransforms>()//add user context to be used by other services
+    builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy")).AddTransforms<UserContextTransforms>();//add user context to be used by other services
     
 
 builder.Services.AddControllers();

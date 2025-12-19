@@ -28,7 +28,16 @@ public class UserContextTransforms:ITransformProvider
                 var userId = httpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? httpContext?.User.FindFirst("sub")?.Value;
                 //e
                 var email = httpContext?.User?.FindFirst(ClaimTypes.Email)?.Value ?? httpContext?.User.FindFirst("email")?.Value;
-                var roles = string.Join(",", httpContext?.User?.FindAll(ClaimTypes.Role).Select(r => r?.Value));
+                var roles = string.Join(",", httpContext.User.FindAll(ClaimTypes.Role).Select(r => r?.Value));
+
+                //add header to requests
+                if(!string.IsNullOrEmpty(userId))
+                
+                    transfromContext.ProxyRequest.Headers.Add("X-User-Id", userId);
+                if (!string.IsNullOrEmpty(email))
+                    transfromContext.ProxyRequest.Headers.Add("X-User-Email", email);
+                if (!string.IsNullOrEmpty(roles))
+                    transfromContext.ProxyRequest.Headers.Add("X-User-Roles", roles);
             }
         });
     }
