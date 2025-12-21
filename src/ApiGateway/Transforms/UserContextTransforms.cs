@@ -6,10 +6,7 @@ namespace ApiGateway.Transforms;
 
 public class UserContextTransforms:ITransformProvider
 {
-    public void ValidateRoute(TransformClusterValidationContext context)
-    {
 
-    }
     public void ValidateCluster(TransformClusterValidationContext context)
     {
 
@@ -42,4 +39,8 @@ public class UserContextTransforms:ITransformProvider
         });
     }
 
+    public void ValidateRoute(TransformRouteValidationContext context)
+    {
+        throw new NotImplementedException();
+    }
 }
