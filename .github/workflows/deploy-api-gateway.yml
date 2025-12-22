@@ -1,0 +1,68 @@
+name: Deploy API Gateway
+
+env:
+  AWS_REGION: us-east-1             
+  ECR_REPOSITORY: centeshop/api-gateway
+  ECS_CLUSTER: centeshop-cluster
+  ECS_SERVICE: api-gateway
+
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/ApiGateway/**'
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest  
+    
+    steps:
+  
+    - name: Checkout code
+      uses: actions/checkout@v4  # ← Clones your repo
+    
+  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        # ← These come from GitHub Secrets (Settings → Secrets)
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # ← This comes from env (defined at top)
+        aws-region: ${{ env.AWS_REGION }}
+    
+   
+    - name: Login to Amazon ECR
+      id: login-ecr  # ← Give this step an ID
+      uses: aws-actions/amazon-ecr-login@v2
+    
+   
+    - name: Build and push Docker image
+      id: build-image
+      env:
+        # ← STEP-LEVEL environment variable
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}  # ← Built-in variable (git commit SHA)
+      run: |
+        # Now we can use the environment variables
+        echo "Building image..."
+        docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG src/ApiGateway
+        
+        echo "Pushing image..."
+        docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+        
+        # Output for next steps
+        echo "image=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    
+    # ══════════════════════════════════════════════════
+    # STEP 5: Deploy to ECS
+    # ══════════════════════════════════════════════════
+    - name: Deploy to ECS
+      run: |
+        aws ecs update-service \
+          --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE }} \
+          --force-new-deployment
