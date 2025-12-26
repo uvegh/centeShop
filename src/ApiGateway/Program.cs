@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Polly;
+
 
 
 using Serilog;
 using System.Threading.RateLimiting;
 using ApiGateway.Transforms;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console().WriteTo.File("logs/gateway-.log", rollingInterval: RollingInterval.Day).CreateLogger();
+Log.Logger = new LoggerConfiguration().Enrich.FromLogContext().Enrich.WithProperty("Service","ApiGateway")
+    .WriteTo.Console().WriteTo.Seq("http://seq:5431") .WriteTo.File("logs/gateway-.log",
+    rollingInterval: RollingInterval.Day).CreateLogger();
 
 try
 {
