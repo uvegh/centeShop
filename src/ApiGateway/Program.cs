@@ -15,7 +15,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
     // Add services to the container.
-
+    Log.Information("app is running");
     //Cors
     builder.Services.AddCors(options =>
     {
@@ -32,6 +32,17 @@ try
         options.Authority = builder.Configuration["Keycloak:Authority"];
         options.Audience = builder.Configuration["Keycloak:Audience"];
         options.RequireHttpsMetadata = bool.Parse(builder.Configuration["keycloak:RequireHttpsMetadata"] ?? "false");
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
+        ValidateIssuer=true,
+        ValidIssuers= new[]
+        {
+            "http://keycloak:8080/realms/centeshop",      // Internal
+                "http://localhost:8081/realms/centeshop"
+        },ValidateAudience=true,
+        ValidAudience="centeshop-api",
+        ValidateLifetime=true,
+        ValidateIssuerSigningKey=true
+        };
         options.Events = new JwtBearerEvents
         {
             OnAuthenticationFailed = (context) =>
